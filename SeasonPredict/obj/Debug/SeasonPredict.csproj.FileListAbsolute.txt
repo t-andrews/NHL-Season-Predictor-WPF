@@ -1,0 +1,41 @@
+c:\users\tom91\source\repos\SeasonPredict\SeasonPredict\bin\Debug\SeasonPredict.exe.config
+c:\users\tom91\source\repos\SeasonPredict\SeasonPredict\bin\Debug\SeasonPredict.exe
+c:\users\tom91\source\repos\SeasonPredict\SeasonPredict\bin\Debug\SeasonPredict.pdb
+c:\users\tom91\source\repos\SeasonPredict\SeasonPredict\bin\Debug\Newtonsoft.Json.dll
+c:\users\tom91\source\repos\SeasonPredict\SeasonPredict\bin\Debug\Newtonsoft.Json.xml
+c:\users\tom91\source\repos\SeasonPredict\SeasonPredict\obj\Debug\SeasonPredict.csprojAssemblyReference.cache
+c:\users\tom91\source\repos\SeasonPredict\SeasonPredict\obj\Debug\MainWindow.g.cs
+c:\users\tom91\source\repos\SeasonPredict\SeasonPredict\obj\Debug\App.g.cs
+c:\users\tom91\source\repos\SeasonPredict\SeasonPredict\obj\Debug\SeasonPredict_MarkupCompile.cache
+c:\users\tom91\source\repos\SeasonPredict\SeasonPredict\obj\Debug\SeasonPredict_MarkupCompile.lref
+c:\users\tom91\source\repos\SeasonPredict\SeasonPredict\obj\Debug\MainWindow.baml
+c:\users\tom91\source\repos\SeasonPredict\SeasonPredict\obj\Debug\SeasonPredict.g.resources
+c:\users\tom91\source\repos\SeasonPredict\SeasonPredict\obj\Debug\SeasonPredict.Properties.Resources.resources
+c:\users\tom91\source\repos\SeasonPredict\SeasonPredict\obj\Debug\SeasonPredict.csproj.GenerateResource.cache
+c:\users\tom91\source\repos\SeasonPredict\SeasonPredict\obj\Debug\SeasonPredict.csproj.CoreCompileInputs.cache
+c:\users\tom91\source\repos\SeasonPredict\SeasonPredict\obj\Debug\SeasonPredict.csproj.CopyComplete
+c:\users\tom91\source\repos\SeasonPredict\SeasonPredict\obj\Debug\SeasonPredict.exe
+c:\users\tom91\source\repos\SeasonPredict\SeasonPredict\obj\Debug\SeasonPredict.pdb
+D:\VS Projects\SeasonPredict\SeasonPredict\bin\Debug\SeasonPredict.exe.config
+D:\VS Projects\SeasonPredict\SeasonPredict\bin\Debug\SeasonPredict.exe
+D:\VS Projects\SeasonPredict\SeasonPredict\bin\Debug\SeasonPredict.pdb
+D:\VS Projects\SeasonPredict\SeasonPredict\bin\Debug\Newtonsoft.Json.xml
+D:\VS Projects\SeasonPredict\SeasonPredict\obj\Debug\SeasonPredict.csprojAssemblyReference.cache
+D:\VS Projects\SeasonPredict\SeasonPredict\obj\Debug\MainWindow.g.cs
+D:\VS Projects\SeasonPredict\SeasonPredict\obj\Debug\App.g.cs
+D:\VS Projects\SeasonPredict\SeasonPredict\obj\Debug\SeasonPredict_MarkupCompile.cache
+D:\VS Projects\SeasonPredict\SeasonPredict\obj\Debug\MainWindow.baml
+D:\VS Projects\SeasonPredict\SeasonPredict\obj\Debug\SeasonPredict.g.resources
+D:\VS Projects\SeasonPredict\SeasonPredict\obj\Debug\SeasonPredict.Properties.Resources.resources
+D:\VS Projects\SeasonPredict\SeasonPredict\obj\Debug\SeasonPredict.csproj.GenerateResource.cache
+D:\VS Projects\SeasonPredict\SeasonPredict\obj\Debug\SeasonPredict.csproj.CoreCompileInputs.cache
+D:\VS Projects\SeasonPredict\SeasonPredict\obj\Debug\SeasonPredict.csproj.CopyComplete
+D:\VS Projects\SeasonPredict\SeasonPredict\obj\Debug\SeasonPredict.exe
+D:\VS Projects\SeasonPredict\SeasonPredict\obj\Debug\SeasonPredict.pdb
+D:\VS Projects\SeasonPredict\SeasonPredict\obj\Debug\SeasonPredict_MarkupCompile.lref
+D:\VS Projects\SeasonPredict\SeasonPredict\bin\Debug\SeasonPredict.exe.manifest
+D:\VS Projects\SeasonPredict\SeasonPredict\bin\Debug\SeasonPredict.application
+D:\VS Projects\SeasonPredict\SeasonPredict\obj\Debug\SeasonPredict_Content.g.cs
+D:\VS Projects\SeasonPredict\SeasonPredict\obj\Debug\SeasonPredict.TrustInfo.xml
+D:\VS Projects\SeasonPredict\SeasonPredict\obj\Debug\SeasonPredict.exe.manifest
+D:\VS Projects\SeasonPredict\SeasonPredict\obj\Debug\SeasonPredict.application
