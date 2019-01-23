@@ -17,7 +17,6 @@ namespace SeasonPredict
 
             Team obj = teamsList.SelectedItem as Team;
 
-            
         }
         public async void sendRequest_Click(object sender, RoutedEventArgs e)
         {
@@ -25,8 +24,6 @@ namespace SeasonPredict
                 expectedSeasonBox.Text = string.Empty;
 
             Player p = await ApiLoader.LoadPlayer((playersList.SelectedItem as Roster2).Id);
-
-            p.CalculateExpectedSeason();
 
             expectedSeasonBox.Text = p.ToString();
         }

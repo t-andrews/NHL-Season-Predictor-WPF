@@ -25,14 +25,7 @@ namespace SeasonPredict
             {
                 SeasonList.Add(s.Duplicate(s));
             }
-        }
-
-        public override string ToString()
-        {
-            return "A:" + ExpectedSeason.Assists
-                + " G:" + ExpectedSeason.Goals
-                + " P:" + ExpectedSeason.Points
-                + " GP:" + ExpectedSeason.GamesPlayed;
+            CalculateExpectedSeason();
         }
 
         public Player Duplicate(Player p) => new Player(p.SeasonList);
@@ -41,33 +34,67 @@ namespace SeasonPredict
         {
             double total = 0.0;
             List<double> weightList = new List<double>();
-            int i;
+            int i = 0, average = (int)SeasonList.Average(p => p.GamesPlayed);
 
             for (i = 0; i < SeasonList.Count; i++)
             {
-                if (SeasonList[i].GamesPlayed >= SeasonList.Average(p => p.GamesPlayed))
+                if(SeasonList.Count > 5)//If there are enough seasons to eliminate the ones below games played average
                 {
-                    if(i==0)
-                        weightList.Add((double)(SeasonList.Count - i) * 0.8f);//Making the most recent season the more heavy on the final speculation
+                    if (SeasonList[i].GamesPlayed >= average)//If above games played average
+                    {
+                        
+                    }
+                    else//Eliminate season with below average games played
+                    {
+                        SeasonList.Remove(SeasonList[i]);
+                        i--;//Stay at the same index since the next one is moved back
+                    }
+                }
+                else
+                {
+                    if (i == 0)
+                        weightList.Add((double)(SeasonList.Count - i) * 0.5f);//Making the most recent season the most heavy on the final speculation
+                    else if (i == 1)
+                        weightList.Add((double)(SeasonList.Count - i) / (double)(SeasonList.Count * i));
                     else
                         weightList.Add((double)(SeasonList.Count - i) / (double)(SeasonList.Count * (i + 1)));
                 }
                     
-                else
-                {
-                    SeasonList.Remove(SeasonList[i]);
-                    i--;
-                }
             }
             total = weightList.Sum();
             for (i = 0; i < weightList.Count;i++)
             {
                 weightList[i] /= total;
-                ExpectedSeason.Assists += (int)(SeasonList[i].Assists * weightList[i]);
-                ExpectedSeason.Goals += (int)(SeasonList[i].Goals * weightList[i]);
-                ExpectedSeason.GamesPlayed += (int)(SeasonList[i].GamesPlayed * weightList[i]);
+                ExpectedSeason.Assists += (int)Math.Round((SeasonList[i].Assists * weightList[i]));
+                ExpectedSeason.Goals += (int)Math.Round((SeasonList[i].Goals * weightList[i]));
+                ExpectedSeason.GamesPlayed += (int)Math.Round((SeasonList[i].GamesPlayed * weightList[i]));
             }
             ExpectedSeason.CalculatePoints();
+        }
+
+        public void AddWeight(ref List<double> list, int i)
+        {
+            if (i == 0)
+                list.Add((double)(SeasonList.Count - i));//Making the most recent season the most heavy on the final speculation
+            else if (i == 1)
+                list.Add((double)(SeasonList.Count - i) / (double)(SeasonList.Count));
+            else
+                list.Add((double)(SeasonList.Count - i) / (double)(SeasonList.Count * (i + 1)));
+        }
+
+        public override string ToString()
+        {
+            if (SeasonList.Count > 2)
+            {
+                return "Assists: " + ExpectedSeason.Assists
+                + "\nGoals: " + ExpectedSeason.Goals
+                + "\nPoints: " + ExpectedSeason.Points
+                + "\nGames played: " + ExpectedSeason.GamesPlayed;
+            }
+            else
+            {
+                return "Insufficient number of seasons.";
+            }
         }
     }
 

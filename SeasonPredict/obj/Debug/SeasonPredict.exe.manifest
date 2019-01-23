@@ -42,14 +42,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="SeasonPredict.exe" size="961504">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="SeasonPredict.exe" size="962016">
       <assemblyIdentity name="SeasonPredict" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>8LHbfCRYgAxfRRbQqcuK6WyNuDE+qBFxWKlmhd0L0ss=</dsig:DigestValue>
+        <dsig:DigestValue>l2zj7IhKWavJhTC7SoFIBRVmf2lQ6VaAJw9TIKIP2ag=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
