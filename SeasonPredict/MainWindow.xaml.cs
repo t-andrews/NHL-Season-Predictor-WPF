@@ -20,13 +20,17 @@ namespace SeasonPredict
         }
         public async void sendRequest_Click(object sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrEmpty(expectedSeasonBox.Text))
-                expectedSeasonBox.Text = string.Empty;
+            if(playersList.SelectedItem != null)
+            {
+                if (!string.IsNullOrEmpty(expectedSeasonBox.Text))
+                    expectedSeasonBox.Text = string.Empty;
 
-            Player p = await ApiLoader.LoadPlayer((playersList.SelectedItem as Roster2).Id);
 
-            expectedSeasonBox.Text = p.ToString();
-        }
+                Player p = await ApiLoader.LoadPlayer((playersList.SelectedItem as Roster2).Id);
+
+                expectedSeasonBox.Text = p.ToString();
+            }
+          }
 
         private void chooseTeam_Click(object sender, RoutedEventArgs e)
         {

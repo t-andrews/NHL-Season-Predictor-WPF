@@ -34,15 +34,15 @@ namespace SeasonPredict
         {
             double total = 0.0;
             List<double> weightList = new List<double>();
-            int i = 0, average = (int)SeasonList.Average(p => p.GamesPlayed);
+            int i = 0, averageGames = (int)SeasonList.Average(p => p.GamesPlayed);
 
             for (i = 0; i < SeasonList.Count; i++)
             {
                 if(SeasonList.Count > 5)//If there are enough seasons to eliminate the ones below games played average
                 {
-                    if (SeasonList[i].GamesPlayed >= average)//If above games played average
+                    if (SeasonList[i].GamesPlayed >= averageGames)//If above games played average
                     {
-                        
+                        AddWeight(ref weightList, i);
                     }
                     else//Eliminate season with below average games played
                     {
@@ -52,14 +52,8 @@ namespace SeasonPredict
                 }
                 else
                 {
-                    if (i == 0)
-                        weightList.Add((double)(SeasonList.Count - i) * 0.5f);//Making the most recent season the most heavy on the final speculation
-                    else if (i == 1)
-                        weightList.Add((double)(SeasonList.Count - i) / (double)(SeasonList.Count * i));
-                    else
-                        weightList.Add((double)(SeasonList.Count - i) / (double)(SeasonList.Count * (i + 1)));
+                    AddWeight(ref weightList, i);
                 }
-                    
             }
             total = weightList.Sum();
             for (i = 0; i < weightList.Count;i++)
@@ -72,10 +66,12 @@ namespace SeasonPredict
             ExpectedSeason.CalculatePoints();
         }
 
-        public void AddWeight(ref List<double> list, int i)
+        private void AddWeight(ref List<double> list, int i)
         {
             if (i == 0)
-                list.Add((double)(SeasonList.Count - i));//Making the most recent season the most heavy on the final speculation
+            {
+                list.Add((double)(SeasonList.Count - i) * 0.5f);
+            }
             else if (i == 1)
                 list.Add((double)(SeasonList.Count - i) / (double)(SeasonList.Count));
             else
