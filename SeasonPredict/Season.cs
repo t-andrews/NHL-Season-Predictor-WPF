@@ -29,7 +29,7 @@ namespace SeasonPredict
             CalculatePoints();
         }
 
-        public Season Duplicate(Season s)
+        public static Season Duplicate(Season s)
         {
             return new Season(s.Assists, s.Goals, s.GamesPlayed);
         }

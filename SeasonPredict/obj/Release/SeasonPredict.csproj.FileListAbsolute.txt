@@ -4,7 +4,6 @@ D:\VS Projects\NHL-Season-Predictor\SeasonPredict\bin\Release\SeasonPredict.appl
 D:\VS Projects\NHL-Season-Predictor\SeasonPredict\bin\Release\SeasonPredict.exe
 D:\VS Projects\NHL-Season-Predictor\SeasonPredict\bin\Release\SeasonPredict.pdb
 D:\VS Projects\NHL-Season-Predictor\SeasonPredict\bin\Release\Newtonsoft.Json.xml
-D:\VS Projects\NHL-Season-Predictor\SeasonPredict\obj\Release\SeasonPredict.csprojAssemblyReference.cache
 D:\VS Projects\NHL-Season-Predictor\SeasonPredict\obj\Release\MainWindow.g.cs
 D:\VS Projects\NHL-Season-Predictor\SeasonPredict\obj\Release\App.g.cs
 D:\VS Projects\NHL-Season-Predictor\SeasonPredict\obj\Release\SeasonPredict_Content.g.cs

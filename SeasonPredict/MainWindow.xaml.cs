@@ -28,7 +28,7 @@ namespace SeasonPredict
 
                 Player p = await ApiLoader.LoadPlayer((playersList.SelectedItem as Roster2).Id);
 
-                expectedSeasonBox.Text = p.ToString();
+                expectedSeasonBox.Text = (playersList.SelectedItem as Roster2).Name + "\n" + p;
             }
           }
 

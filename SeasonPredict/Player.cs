@@ -13,23 +13,24 @@ namespace SeasonPredict
 
         public void Add(Season s) => SeasonList.Add(s);
 
-        public Player()
+        //Only Player construcor
+        public Player(List<Season> seasonsToDuplicate)
         {
             SeasonList = new List<Season>();
             ExpectedSeason = new Season();
-        }
 
-        public Player(List<Season> seasonsToDuplicate) : this()
-        {
             foreach (Season s in seasonsToDuplicate)
             {
-                SeasonList.Add(s.Duplicate(s));
+                SeasonList.Add(Season.Duplicate(s));
             }
             CalculateExpectedSeason();
         }
 
         public Player Duplicate(Player p) => new Player(p.SeasonList);
-
+        
+        /// <summary>
+        /// Calculates an estimation of the player's next season by computing a weighted average with the most important season being the most recent
+        /// </summary>
         public void CalculateExpectedSeason()
         {
             double total = 0.0;
@@ -58,12 +59,27 @@ namespace SeasonPredict
             total = weightList.Sum();
             for (i = 0; i < weightList.Count;i++)
             {
-                weightList[i] /= total;
-                ExpectedSeason.Assists += (int)Math.Round((SeasonList[i].Assists * weightList[i]));
-                ExpectedSeason.Goals += (int)Math.Round((SeasonList[i].Goals * weightList[i]));
-                ExpectedSeason.GamesPlayed += (int)Math.Round((SeasonList[i].GamesPlayed * weightList[i]));
+                AddSeasonWeights(weightList, i, total);
             }
+
+            if (ExpectedSeason.GamesPlayed > 82)
+                ExpectedSeason.GamesPlayed = 82;
+
             ExpectedSeason.CalculatePoints();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="weightList">Current list of weights each season has on the overall calculation</param>
+        /// <param name="i">Current season index</param>
+        /// <param name="total">Sum of all season weights</param>
+        private void AddSeasonWeights(List<double> weightList, int i, double total)
+        {
+            weightList[i] /= total;//Making this season's weight into percentage
+            ExpectedSeason.Assists += (int) Math.Round((SeasonList[i].Assists * weightList[i]));
+            ExpectedSeason.Goals += (int) Math.Round((SeasonList[i].Goals * weightList[i]));
+            ExpectedSeason.GamesPlayed += (int) Math.Round((SeasonList[i].GamesPlayed * weightList[i]));
         }
 
         private void AddWeight(ref List<double> list, int i)
@@ -83,9 +99,9 @@ namespace SeasonPredict
             if (SeasonList.Count > 2)
             {
                 return "Assists: " + ExpectedSeason.Assists
-                + "\nGoals: " + ExpectedSeason.Goals
-                + "\nPoints: " + ExpectedSeason.Points
-                + "\nGames played: " + ExpectedSeason.GamesPlayed;
+                     + "\nGoals: " + ExpectedSeason.Goals
+                     + "\nPoints: " + ExpectedSeason.Points
+                     + "\nGames played: " + ExpectedSeason.GamesPlayed;
             }
             else
             {
@@ -112,9 +128,10 @@ namespace SeasonPredict
     public class StatsList
     {
         public List<Stat> Stats { get; set; }
-        public int Assists => Stats[0].Splits[0].Stat.Assists;
-        public int Goals => Stats[0].Splits[0].Stat.Goals;
-        public int Games => Stats[0].Splits[0].Stat.Games;
+        private int Assists => Stats[0].Splits[0].Stat.Assists;
+        private int Goals => Stats[0].Splits[0].Stat.Goals;
+        private int Games => Stats[0].Splits[0].Stat.Games;
+        public Season Season => new Season(Assists, Goals, Games);
     }
 
     public class Position

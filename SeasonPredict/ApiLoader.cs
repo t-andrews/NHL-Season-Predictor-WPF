@@ -10,6 +10,11 @@ namespace SeasonPredict
 {
     public class ApiLoader
     {
+        /// <summary>
+        /// Fetching and deserializing all active teams
+        /// </summary>
+        /// <param name="id">Player ID in the NHL's database</param>
+        /// <returns>The player </returns>
         public static async Task<ObservableCollection<Team>> LoadTeams()
         {
             ObservableCollection<Team> teamList = new ObservableCollection<Team>();
@@ -44,51 +49,17 @@ namespace SeasonPredict
                             }
                             teamList.Add(t);
                         }
-                            
                     }
                 }
             };
             return teamList;
         }
 
-        //public static async Task<int> FindId(string fullName, string abbreviation)
-        //{
-        //    string url = "https://statsapi.web.nhl.com/api/v1/teams/";
-        //    int id = 0;
-        //    string objectString;
-        //    TeamList teamsObject;
-
-        //    using (var client = new HttpClient())
-        //    {
-        //        HttpResponseMessage response = await client.GetAsync(url);
-
-        //        if(response.IsSuccessStatusCode)
-        //        {
-        //            Team team = AllTeams.Single(t => t.Active && t.Abbreviation.ToUpper().Equals(abbreviation.ToUpper()));
-
-        //            response = await client.GetAsync(url + team.Id + "?expand=team.roster");
-        //            if (response.IsSuccessStatusCode)
-        //            {
-        //                objectString = await client.GetStringAsync(url + team.Id + "?expand=team.roster");
-        //                teamsObject = JsonConvert.DeserializeObject<TeamList>(objectString);
-
-        //                id = teamsObject.Teams[0].Roster.Roster.Single(p => p.Person.FullName.ToLower().Equals(fullName.ToLower())).Person.Id;
-
-        //                //foreach (Roster2 r in teamsObject.Teams[0].Roster.Roster)
-        //                //{
-        //                //    if (r.Person.FullName.ToLower().Equals(fullName.ToLower()))
-        //                //    {
-        //                //        id = r.Person.Id;
-        //                //        return id;
-        //                //    }
-        //                //}
-        //            }
-        //        }
-        //    }
-
-        //    return id;
-        //}
-
+        /// <summary>
+        /// Fetching and deserializing player object corresponding to ID
+        /// </summary>
+        /// <param name="id">Player ID in the NHL's database</param>
+        /// <returns>The player </returns>
         public static async Task<Player> LoadPlayer(string id)
         {
             int nullSeasonCount = 0;
@@ -96,7 +67,7 @@ namespace SeasonPredict
             string year = "20172018";
             string url = "https://statsapi.web.nhl.com/api/v1/people/" + id + "/stats?stats=statsSingleSeason&season=";
             string objectString;
-            StatsList playerObject;
+            StatsList seasonObject;
             List<Season> seasonList = new List<Season>();
 
             do
@@ -108,10 +79,10 @@ namespace SeasonPredict
                     if (response.IsSuccessStatusCode)
                     {
                         objectString = await client.GetStringAsync(url + year);
-                        if (objectString.Contains("\"season\""))
+                        if (objectString.Contains("\"season\""))//Means there is an active season at that year
                         {
-                            playerObject = JsonConvert.DeserializeObject<StatsList>(objectString);
-                            seasonList.Add(new Season(playerObject.Assists, playerObject.Goals, playerObject.Games));
+                            seasonObject = JsonConvert.DeserializeObject<StatsList>(objectString);
+                            seasonList.Add(Season.Duplicate(seasonObject.Season));
                         } 
                         else
                         {
@@ -126,6 +97,7 @@ namespace SeasonPredict
                     if (nullSeasonCount > 4)
                         stop = true;
 
+                    //Subtracting one season year
                     year = (int.Parse(year.Substring(0, 4)) - 1).ToString() 
                          + (int.Parse(year.Substring(4, 4)) - 1).ToString();
 
