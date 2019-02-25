@@ -4,6 +4,8 @@ using System.Linq;
 
 namespace SeasonPredict
 {
+    //Objects needed for deserialization of the JSON teams/rosters coming from the NHL's API
+
     public class Roster2
     {
         public Person Person { get; set; }

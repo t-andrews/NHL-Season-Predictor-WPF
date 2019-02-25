@@ -6,27 +6,39 @@ using System.Threading.Tasks;
 
 namespace SeasonPredict
 {
-    public class Player
+    public class Player : Person
     {
         public List<Season> SeasonList { get; private set; }
         public Season ExpectedSeason { get; private set; }
 
         public void Add(Season s) => SeasonList.Add(s);
+        public void Remove(Season s) => SeasonList.Remove(s);
 
-        //Only Player construcor
         public Player(List<Season> seasonsToDuplicate)
         {
             SeasonList = new List<Season>();
             ExpectedSeason = new Season();
+            FullName = "";
 
             foreach (Season s in seasonsToDuplicate)
             {
-                SeasonList.Add(Season.Duplicate(s));
+                Add(Season.Duplicate(s));
             }
             CalculateExpectedSeason();
         }
 
-        public Player Duplicate(Player p) => new Player(p.SeasonList);
+        public Player(Player p, string name, string id) : this(p.SeasonList)
+        {
+            Id = id;
+            FullName = name;
+        }
+
+        /// <summary>
+        /// Complete player duplicator: calls the 3-parameter constructor
+        /// </summary>
+        /// <param name="p"></param>
+        /// <returns>The duplication of the player passed as a parameter</returns>
+        public static Player Duplicate(Player p) => new Player(p, p.FullName, p.Id);
         
         /// <summary>
         /// Calculates an estimation of the player's next season by computing a weighted average with the most important season being the most recent
@@ -34,7 +46,7 @@ namespace SeasonPredict
         public void CalculateExpectedSeason()
         {
             double total = 0.0;
-            List<double> weightList = new List<double>();
+            List<double> weightsList = new List<double>();
             int i = 0, averageGames = (int)SeasonList.Average(p => p.GamesPlayed);
 
             for (i = 0; i < SeasonList.Count; i++)
@@ -43,23 +55,25 @@ namespace SeasonPredict
                 {
                     if (SeasonList[i].GamesPlayed >= averageGames)//If above games played average
                     {
-                        AddWeight(ref weightList, i);
+                        AddWeight(weightsList, i);
                     }
                     else//Eliminate season with below average games played
                     {
-                        SeasonList.Remove(SeasonList[i]);
+                        Remove(SeasonList[i]);
                         i--;//Stay at the same index since the next one is moved back
                     }
                 }
                 else
                 {
-                    AddWeight(ref weightList, i);
+                    AddWeight(weightsList, i);
                 }
             }
-            total = weightList.Sum();
-            for (i = 0; i < weightList.Count;i++)
+            //Total of all absolute weights used to calculate relative weight of each season in next step
+            total = weightsList.Sum();
+
+            for (i = 0; i < weightsList.Count;i++)
             {
-                AddSeasonWeights(weightList, i, total);
+                IncrementSeasonWeight(weightsList, i, total);
             }
 
             if (ExpectedSeason.GamesPlayed > 82)
@@ -74,7 +88,7 @@ namespace SeasonPredict
         /// <param name="weightList">Current list of weights each season has on the overall calculation</param>
         /// <param name="i">Current season index</param>
         /// <param name="total">Sum of all season weights</param>
-        private void AddSeasonWeights(List<double> weightList, int i, double total)
+        private void IncrementSeasonWeight(List<double> weightList, int i, double total)
         {
             weightList[i] /= total;//Making this season's weight into percentage
             ExpectedSeason.Assists += (int) Math.Round((SeasonList[i].Assists * weightList[i]));
@@ -82,23 +96,24 @@ namespace SeasonPredict
             ExpectedSeason.GamesPlayed += (int) Math.Round((SeasonList[i].GamesPlayed * weightList[i]));
         }
 
-        private void AddWeight(ref List<double> list, int i)
+        private void AddWeight(List<double> weightsList, int i)
         {
             if (i == 0)
             {
-                list.Add((double)(SeasonList.Count - i) * 0.5f);
+                weightsList.Add((double)(SeasonList.Count - i) * 0.5f);
             }
             else if (i == 1)
-                list.Add((double)(SeasonList.Count - i) / (double)(SeasonList.Count));
+                weightsList.Add((double)(SeasonList.Count - i) / (double)(SeasonList.Count));
             else
-                list.Add((double)(SeasonList.Count - i) / (double)(SeasonList.Count * (i + 1)));
+                weightsList.Add((double)(SeasonList.Count - i) / (double)(SeasonList.Count * (i + 1)));
         }
 
         public override string ToString()
         {
             if (SeasonList.Count > 2)
             {
-                return "Assists: " + ExpectedSeason.Assists
+                return FullName
+                     + "\nAssists: " + ExpectedSeason.Assists
                      + "\nGoals: " + ExpectedSeason.Goals
                      + "\nPoints: " + ExpectedSeason.Points
                      + "\nGames played: " + ExpectedSeason.GamesPlayed;
@@ -110,6 +125,9 @@ namespace SeasonPredict
         }
     }
 
+
+    //------------------------------------------------------------------------------------------------
+    //Objects needed for deserialization of the JSON persons/stats coming from the NHL's API
     public class Stat2
     {
         public int Assists { get; set; }

@@ -14,14 +14,13 @@ namespace SeasonPredict
         /// Fetching and deserializing all active teams
         /// </summary>
         /// <param name="id">Player ID in the NHL's database</param>
-        /// <returns>The player </returns>
+        /// <returns>The complete list of active teams (with their roster)</returns>
         public static async Task<ObservableCollection<Team>> LoadTeams()
         {
             ObservableCollection<Team> teamList = new ObservableCollection<Team>();
 
             string url = "https://statsapi.web.nhl.com/api/v1/teams/";
-            string objectString;
-            TeamList teamsObject;
+            TeamList allTeams;
 
             using (var client = new HttpClient())
             {
@@ -29,25 +28,18 @@ namespace SeasonPredict
 
                 if (response.IsSuccessStatusCode)
                 {
-                    objectString = await client.GetStringAsync(url + "?expand=team.roster");
-                    teamsObject = JsonConvert.DeserializeObject<TeamList>(objectString);
+                    allTeams = JsonConvert.DeserializeObject<TeamList>(await client.GetStringAsync(url + "?expand=team.roster"));
 
-                    foreach (Team t in teamsObject.Teams)
+                    foreach (Team team in allTeams.Teams)
                     {
-                        if (t.Active)
+                        if (team.Active)
                         {
-                            t.PersonList = new ObservableCollection<Roster2>(t.PersonList.OrderBy(r => r.Person.FullName));
+                            team.PersonList = new ObservableCollection<Roster2>(team.PersonList.OrderBy(r => r.Person.FullName));
 
-                            //Removing all goaltenders from the teams
-                            for (int i = 0; i < t.PersonList.Count; i++)
-                            {
-                                if(t.PersonList[i].Code.Equals("G"))
-                                {
-                                    t.PersonList.Remove(t.PersonList[i]);
-                                    i--;
-                                }  
-                            }
-                            teamList.Add(t);
+                            while(team.PersonList.Any(p => p.Code.Equals("G")))
+                                team.PersonList.Remove(team.PersonList.First(p => p.Code.Equals("G")));
+
+                            teamList.Add(team);
                         }
                     }
                 }

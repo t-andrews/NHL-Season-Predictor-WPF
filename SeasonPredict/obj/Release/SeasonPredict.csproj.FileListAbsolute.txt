@@ -20,3 +20,4 @@ D:\VS Projects\NHL-Season-Predictor\SeasonPredict\obj\Release\SeasonPredict.appl
 D:\VS Projects\NHL-Season-Predictor\SeasonPredict\obj\Release\SeasonPredict.csproj.CopyComplete
 D:\VS Projects\NHL-Season-Predictor\SeasonPredict\obj\Release\SeasonPredict.exe
 D:\VS Projects\NHL-Season-Predictor\SeasonPredict\obj\Release\SeasonPredict.pdb
+D:\VS Projects\NHL-Season-Predictor\SeasonPredict\obj\Release\SeasonPredict.csprojAssemblyReference.cache
