@@ -52,7 +52,7 @@ namespace SeasonPredict
 
         private void chooseTeam_Click(object sender, RoutedEventArgs e)
         {
-            playersList.ItemsSource = (teamsList.SelectedItem as Team).Roster.Roster;
+            playersList.ItemsSource = (teamsList.SelectedItem as Team).PersonList;
         }
     }
 }
