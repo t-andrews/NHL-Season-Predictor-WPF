@@ -9,8 +9,8 @@
     <Grid Margin="0,0,0,12">
         <ListBox x:Name="teamsList" HorizontalAlignment="Left" Height="278" Margin="10,10,0,0" VerticalAlignment="Top" Width="265"/>
         <TextBox x:Name="expectedSeasonBox" HorizontalAlignment="Left" Height="92" Margin="309,226,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="256"/>
-        <Button x:Name="sendRequest" Content="Estimate next season" HorizontalAlignment="Left" Margin="309,201,0,0" VerticalAlignment="Top" Width="140" Click="sendRequest_Click" RenderTransformOrigin="-1.167,4.5"/>
+        <Button x:Name="sendRequest" Content="Estimate next season" HorizontalAlignment="Left" Margin="309,201,0,0" VerticalAlignment="Top" Width="140" Click="SendRequest_Click" RenderTransformOrigin="-1.167,4.5"/>
         <ListBox x:Name="playersList" HorizontalAlignment="Left" Height="186" Margin="309,10,0,0" VerticalAlignment="Top" Width="256"/>
-        <Button x:Name="chooseTeam" Content="Choose Team" HorizontalAlignment="Left" Margin="10,293,0,0" VerticalAlignment="Top" Width="95" Click="chooseTeam_Click"/>
+        <Button x:Name="chooseTeam" Content="Choose Team" HorizontalAlignment="Left" Margin="10,293,0,0" VerticalAlignment="Top" Width="95" Click="ChooseTeam_Click"/>
     </Grid>
 </Window>

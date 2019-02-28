@@ -15,10 +15,9 @@ namespace SeasonPredict
             TeamListObjects = new TeamCollection();
             PlayersMemory = new List<Player>();
             InitializeComponent();
-            DataContext = this;
             teamsList.ItemsSource = TeamListObjects;
         }
-        public async void sendRequest_Click(object sender, RoutedEventArgs e)
+        public async void SendRequest_Click(object sender, RoutedEventArgs e)
         {
             if(playersList.SelectedItem != null)
             {
@@ -27,6 +26,8 @@ namespace SeasonPredict
                 {
                     //When api is called, all GUI components are disabled to prevent user based problems
                     SetComponentsAvailability(false);
+
+                    expectedSeasonBox.Text = "Calculating...";
 
                     Player p = new Player(await ApiLoader.LoadPlayer((playersList.SelectedItem as Roster2).Id), (playersList.SelectedItem as Roster2).Name, (playersList.SelectedItem as Roster2).Id);
                     
@@ -42,15 +43,15 @@ namespace SeasonPredict
             }
           }
 
-        private void SetComponentsAvailability(bool enabled)
+        private void SetComponentsAvailability(bool availability)
         {
-            teamsList.IsEnabled = enabled;
-            chooseTeam.IsEnabled = enabled;
-            playersList.IsEnabled = enabled;
-            sendRequest.IsEnabled = enabled;
+            teamsList.IsEnabled = availability;
+            chooseTeam.IsEnabled = availability;
+            playersList.IsEnabled = availability;
+            sendRequest.IsEnabled = availability;
         }
 
-        private void chooseTeam_Click(object sender, RoutedEventArgs e)
+        private void ChooseTeam_Click(object sender, RoutedEventArgs e)
         {
             playersList.ItemsSource = (teamsList.SelectedItem as Team).PersonList;
         }
