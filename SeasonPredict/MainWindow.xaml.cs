@@ -1,36 +1,44 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using System.Windows.Documents;
+using System.Windows.Controls;
 
 namespace SeasonPredict
 {
     public partial class MainWindow : Window
     {
-        public TeamCollection TeamListObjects;
-        public List<Player> PlayersMemory;
+        public TeamCollection TeamsCollection;
+        public List<Player> PlayersMemory; //Program instance players memory: stores players whose next season is already estimated during this instance of the program
 
         public MainWindow()
         {
-            TeamListObjects = new TeamCollection();
+            TeamsCollection = new TeamCollection();
             PlayersMemory = new List<Player>();
             InitializeComponent();
-            teamsList.ItemsSource = TeamListObjects;
+            teamsListbox.ItemsSource = TeamsCollection;
+            sendRequestButton.IsEnabled = false;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public async void SendRequest_Click(object sender, RoutedEventArgs e)
         {
-            if(playersList.SelectedItem != null)
+            if (!playersListbox.SelectedItem.Equals(null))
             {
                 //Check if the player hasn't already been loaded (avoiding to call the api again)
-                if (!PlayersMemory.Any(p => p.Id.Equals((playersList.SelectedItem as Roster2).Id)))
+                if (!PlayersMemory.Any(p => p.Id.Equals((playersListbox.SelectedItem as Roster2).Id)))
                 {
-                    //When api is called, all GUI components are disabled to prevent user based problems
+                    //When api is called, all GUI components are disabled to prevent user selection change problems
                     SetComponentsAvailability(false);
 
                     expectedSeasonBox.Text = "Calculating...";
 
-                    Player p = new Player(await ApiLoader.LoadPlayer((playersList.SelectedItem as Roster2).Id), (playersList.SelectedItem as Roster2).Name, (playersList.SelectedItem as Roster2).Id);
-                    
+                    Player p = new Player(await ApiLoader.LoadPlayer((playersListbox.SelectedItem as Roster2).Id),
+                        (playersListbox.SelectedItem as Roster2).Name, (playersListbox.SelectedItem as Roster2).Id);
+
                     PlayersMemory.Add(Player.Duplicate(p));
 
                     expectedSeasonBox.Text = p.ToString();
@@ -39,21 +47,43 @@ namespace SeasonPredict
                     SetComponentsAvailability(true);
                 }
                 else
-                    expectedSeasonBox.Text = PlayersMemory.First(p => p.Id.Equals((playersList.SelectedItem as Roster2).Id)).ToString();
+                    expectedSeasonBox.Text = PlayersMemory
+                        .First(p => p.Id.Equals((playersListbox.SelectedItem as Roster2).Id)).ToString();
             }
-          }
-
-        private void SetComponentsAvailability(bool availability)
-        {
-            teamsList.IsEnabled = availability;
-            chooseTeam.IsEnabled = availability;
-            playersList.IsEnabled = availability;
-            sendRequest.IsEnabled = availability;
         }
 
-        private void ChooseTeam_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Makes GUI elements enabled or not according to availability parameter
+        /// </summary>
+        /// <param name="availability">Boolean value assigned to the IsEnabled property of graphical interface elements</param>
+        private void SetComponentsAvailability(bool availability)
         {
-            playersList.ItemsSource = (teamsList.SelectedItem as Team).PersonList;
+            teamsListbox.IsEnabled = availability;
+            playersListbox.IsEnabled = availability;
+            sendRequestButton.IsEnabled = availability;
+        }
+
+        /// <summary>
+        /// teamsListbox SelectionChanged event handling method
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TeamsList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            playersListbox.ItemsSource = (teamsListbox.SelectedItem as Team).PersonList;
+            sendRequestButton.IsEnabled = false;//Since playersListbox isn't focused, the calculation button is disabled
+        }
+
+        /// <summary>
+        /// playersListbox SelectionChanged event handling method
+        /// When selection is changed and the button is disabled, it gets enabled
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void PlayersListbox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(!sendRequestButton.IsEnabled)
+                sendRequestButton.IsEnabled = true;
         }
     }
 }

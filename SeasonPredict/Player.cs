@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SeasonPredict
 {
+    //Player class representing a hockey player
     public class Player : Person
     {
         public List<Season> SeasonList { get; private set; }
@@ -26,6 +25,7 @@ namespace SeasonPredict
             }
             CalculateExpectedSeason();
         }
+
 
         public Player(Player p, string name, string id) : this(p.SeasonList)
         {
@@ -100,10 +100,10 @@ namespace SeasonPredict
         {
             if (i == 0)
             {
-                weightsList.Add((double)(SeasonList.Count - i) * 0.5f);
+                weightsList.Add((double)(SeasonList.Count - i) * 0.4f);
             }
             else if (i == 1)
-                weightsList.Add((double)(SeasonList.Count - i) / (double)(SeasonList.Count));
+                weightsList.Add((double)(SeasonList.Count - i) / (double)(SeasonList.Count) * 1.1f);
             else
                 weightsList.Add((double)(SeasonList.Count - i) / (double)(SeasonList.Count * (i + 1)));
         }
@@ -113,10 +113,10 @@ namespace SeasonPredict
             if (SeasonList.Count > 2)
             {
                 return FullName
-                     + "\nAssists: " + ExpectedSeason.Assists
-                     + "\nGoals: " + ExpectedSeason.Goals
-                     + "\nPoints: " + ExpectedSeason.Points
-                     + "\nGames played: " + ExpectedSeason.GamesPlayed;
+                       + "\nAssists: " + ExpectedSeason.Assists
+                       + "\nGoals: " + ExpectedSeason.Goals
+                       + "\nPoints: " + ExpectedSeason.Points
+                       + "\nGames played: " + ExpectedSeason.GamesPlayed;
             }
             else
             {

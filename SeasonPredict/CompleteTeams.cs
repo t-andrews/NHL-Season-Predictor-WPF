@@ -28,18 +28,27 @@ namespace SeasonPredict
         public string Abbreviation { get; set; }
         public string Name { get; set; }
         public RosterList Roster { get; set; }
+
+        //Using an ObservalbeCollection istead of a List because of the data binding required in the GUI
         public ObservableCollection<Roster2> PersonList
         {
             get => Roster.Roster;
             set { Roster.Roster = value; }
         }
 
-
         public override string ToString() => $"{Name} ({Abbreviation})";
     }
 
+    public class TeamList
+    {
+        public List<Team> Teams { get; set; }
+    }
+
+
+    //TeamCollection class is used to contain all teams fetched from the API and display them in the GUI
     public class TeamCollection : ObservableCollection<Team>
     {
+        //Default and only constructor
         public TeamCollection()
         {
             teamsInit();
@@ -50,13 +59,7 @@ namespace SeasonPredict
             ObservableCollection <Team> temp = new ObservableCollection<Team>((await ApiLoader.LoadTeams()).OrderBy(t => t.Name));//Calls function responsible for the api teams loading request
                                                                                                                                   //+ sorts collection by name
             foreach (Team t in temp)
-            {
                 Add(t);
-            }
         }
-    }
-    public class TeamList
-    {
-        public List<Team> Teams { get; set; }
     }
 }

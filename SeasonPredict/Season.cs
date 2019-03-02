@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SeasonPredict
+﻿namespace SeasonPredict
 {
+    //Season class representing the offensive production of a Player for a given year
+
     public class Season
     {
         public int Assists { get; set; }
