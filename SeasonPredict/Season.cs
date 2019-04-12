@@ -4,10 +4,15 @@
 
     public class Season
     {
-        public int Assists { get; set; }
-        public int Goals { get; set; }
-        public int Points { get; set; }
-        public int GamesPlayed { get; set; }
+        private int assists;
+        private int goals;
+        private int points;
+        private int gamesPlayed;
+
+        public int Assists { get => assists; set => assists = value; }
+        public int Goals { get => goals; set => goals = value; }
+        public int Points { get => points; set => points = value; }
+        public int GamesPlayed { get => gamesPlayed; set => gamesPlayed = value; }
 
         public Season()
         {
