@@ -8,7 +8,9 @@ namespace SeasonPredict
     public partial class MainWindow : Window
     {
         public TeamCollection TeamsCollection;
-        public List<Player> PlayersMemory; //Program instance players memory: stores players whose next season is already estimated during this instance of the program
+
+        public List<Player>
+            PlayersMemory; //Program instance players memory: stores players whose next season is already estimated during this instance of the program
 
         public MainWindow()
         {
@@ -20,7 +22,6 @@ namespace SeasonPredict
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -36,7 +37,7 @@ namespace SeasonPredict
 
                     expectedSeasonBox.Text = "Calculating...";
 
-                    Player p = new Player(await ApiLoader.LoadPlayer((playersListbox.SelectedItem as Roster2).Id),
+                    var p = new Player(await ApiLoader.loadPlayer((playersListbox.SelectedItem as Roster2).Id),
                         (playersListbox.SelectedItem as Roster2).Name, (playersListbox.SelectedItem as Roster2).Id);
 
                     PlayersMemory.Add(Player.Duplicate(p));
@@ -47,13 +48,15 @@ namespace SeasonPredict
                     SetComponentsAvailability(true);
                 }
                 else
+                {
                     expectedSeasonBox.Text = PlayersMemory
                         .First(p => p.Id.Equals((playersListbox.SelectedItem as Roster2).Id)).ToString();
+                }
             }
         }
 
         /// <summary>
-        /// Makes GUI elements enabled or not according to availability parameter
+        ///     Makes GUI elements enabled or not according to availability parameter
         /// </summary>
         /// <param name="availability">Boolean value assigned to the IsEnabled property of graphical interface elements</param>
         private void SetComponentsAvailability(bool availability)
@@ -64,26 +67,29 @@ namespace SeasonPredict
         }
 
         /// <summary>
-        /// teamsListbox SelectionChanged event handling method
+        ///     teamsListbox SelectionChanged event handling method
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void TeamsList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             playersListbox.ItemsSource = (teamsListbox.SelectedItem as Team).PersonList;
-            sendRequestButton.IsEnabled = false;//Since playersListbox isn't focused, the calculation button is disabled
+            sendRequestButton.IsEnabled =
+                false; //Since playersListbox isn't focused, the calculation button is disabled
         }
 
         /// <summary>
-        /// playersListbox SelectionChanged event handling method
-        /// When selection is changed and the button is disabled, it gets enabled
+        ///     playersListbox SelectionChanged event handling method
+        ///     When selection is changed and the button is disabled, it gets enabled
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void PlayersListbox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(!sendRequestButton.IsEnabled)
+            if (!sendRequestButton.IsEnabled)
+            {
                 sendRequestButton.IsEnabled = true;
+            }
         }
     }
 }

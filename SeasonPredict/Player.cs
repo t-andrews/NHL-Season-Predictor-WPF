@@ -8,11 +8,11 @@ namespace SeasonPredict
     //Player class representing a hockey player
     public class Player : Person
     {
-        private Season expectedSeason;
-        private List<Season> seasonList;
+        private Season _expectedSeason;
+        private List<Season> _seasonList;
 
-        public List<Season> SeasonList { get => seasonList; private set => seasonList = value; }
-        public Season ExpectedSeason { get => expectedSeason; private set => expectedSeason = value; }
+        public List<Season> SeasonList { get => _seasonList; private set => _seasonList = value; }
+        public Season ExpectedSeason { get => _expectedSeason; private set => _expectedSeason = value; }
 
         public void Add(Season s) => SeasonList.Add(s);
         public void Remove(Season s) => SeasonList.Remove(s);

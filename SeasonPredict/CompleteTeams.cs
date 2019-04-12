@@ -7,11 +7,11 @@ namespace SeasonPredict
     #region Objects needed for deserialization of the JSON teams/rosters coming from the NHL's API
     public class Roster2
     {
-        private Person person;
-        private Position position;
+        private Person _person;
+        private Position _position;
 
-        public Person Person { get => person; set => person = value; }
-        public Position Position { get => position; set => position = value; }
+        public Person Person { get => _person; set => _person = value; }
+        public Position Position { get => _position; set => _position = value; }
         public string Name => Person.FullName;
         public string Id => Person.Id;
         public string Code => Position.Code;
@@ -21,29 +21,29 @@ namespace SeasonPredict
 
     public class RosterList
     {
-        private ObservableCollection<Roster2> roster;
+        private ObservableCollection<Roster2> _roster;
 
-        public ObservableCollection<Roster2> Roster { get => roster; set => roster = value; }
+        public ObservableCollection<Roster2> Roster { get => _roster; set => _roster = value; }
     }
     public class Team
     {
-        private int id;
-        private bool active;
-        private string abbreviation;
-        private string name;
-        private RosterList roster;
+        private int _id;
+        private bool _active;
+        private string _abbreviation;
+        private string _name;
+        private RosterList _roster;
 
-        public int Id { get => id; set => id = value; }
-        public bool Active { get => active; set => active = value; }
-        public string Abbreviation { get => abbreviation; set => abbreviation = value; }
-        public string Name { get => name; set => name = value; }
-        public RosterList Roster { get => roster; set => roster = value; }
+        public int Id { get => _id; set => _id = value; }
+        public bool Active { get => _active; set => _active = value; }
+        public string Abbreviation { get => _abbreviation; set => _abbreviation = value; }
+        public string Name { get => _name; set => _name = value; }
+        public RosterList Roster { get => _roster; set => _roster = value; }
 
-        //Using an ObservalbeCollection istead of a List because of the data binding required in the GUI
+        //Using an ObservalbeCollection instead of a List because of the data binding required in the GUI
         public ObservableCollection<Roster2> PersonList
         {
             get => Roster.Roster;
-            set { Roster.Roster = value; }
+            set => Roster.Roster = value;
         }
 
         public override string ToString() => $"{Name} ({Abbreviation})";
@@ -51,9 +51,9 @@ namespace SeasonPredict
 
     public class TeamList
     {
-        private List<Team> teams;
+        private List<Team> _teams;
 
-        public List<Team> Teams { get => teams; set => teams = value; }
+        public List<Team> Teams { get => _teams; set => _teams = value; }
     }
     #endregion
 
@@ -68,7 +68,7 @@ namespace SeasonPredict
 
         public async void teamsInit()
         {
-            ObservableCollection <Team> temp = new ObservableCollection<Team>((await ApiLoader.LoadTeams()).OrderBy(t => t.Name));//Calls function responsible for the api teams loading request
+            ObservableCollection <Team> temp = new ObservableCollection<Team>((await ApiLoader.loadTeams()).OrderBy(t => t.Name));//Calls function responsible for the api teams loading request
                                                                                                                                   //+ sorts collection by name
             foreach (Team t in temp)
                 Add(t);
