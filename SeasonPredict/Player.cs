@@ -14,8 +14,8 @@ namespace SeasonPredict
         public List<Season> SeasonList { get => _seasonList; private set => _seasonList = value; }
         public Season ExpectedSeason { get => _expectedSeason; private set => _expectedSeason = value; }
 
-        public void Add(Season s) => SeasonList.Add(s);
-        public void Remove(Season s) => SeasonList.Remove(s);
+        public void add(Season s) => SeasonList.Add(s);
+        public void remove(Season s) => SeasonList.Remove(s);
 
         public Player(List<Season> seasonsToDuplicate)
         {
@@ -23,11 +23,11 @@ namespace SeasonPredict
             ExpectedSeason = new Season();
             FullName = "";
 
-            foreach (Season s in seasonsToDuplicate)
+            foreach (var s in seasonsToDuplicate)
             {
-                Add(Season.Duplicate(s));
+                add(Season.duplicate(s));
             }
-            CalculateExpectedSeason();
+            calculateExpectedSeason();
         }
 
 
@@ -42,15 +42,15 @@ namespace SeasonPredict
         /// </summary>
         /// <param name="p"></param>
         /// <returns>The duplication of the player passed as a parameter</returns>
-        public static Player Duplicate(Player p) => new Player(p, p.FullName, p.Id);
+        public static Player duplicate(Player p) => new Player(p, p.FullName, p.Id);
 
         /// <summary>
         /// Calculates an estimation of the player's next season by computing a weighted average with the most important season being the most recent
         /// </summary>
-        public void CalculateExpectedSeason()
+        public void calculateExpectedSeason()
         {
-            double total = 0.0;
-            List<double> weightsList = new List<double>();
+            var total = 0.0;
+            var weightsList = new List<double>();
             int i = 0, averageGames = (int)SeasonList.Average(p => p.GamesPlayed);
 
             for (i = 0; i < SeasonList.Count; i++)
@@ -59,17 +59,17 @@ namespace SeasonPredict
                 {
                     if (SeasonList[i].GamesPlayed >= averageGames)//If above games played average
                     {
-                        AddWeight(weightsList, i);
+                        addWeight(weightsList, i);
                     }
                     else//Eliminate season with below average games played
                     {
-                        Remove(SeasonList[i]);
+                        remove(SeasonList[i]);
                         i--;//Stay at the same index since the next one is moved back
                     }
                 }
                 else
                 {
-                    AddWeight(weightsList, i);
+                    addWeight(weightsList, i);
                 }
             }
             //Total of all absolute weights used to calculate relative weight of each season in next step
@@ -77,13 +77,16 @@ namespace SeasonPredict
 
             for (i = 0; i < weightsList.Count; i++)
             {
-                IncrementSeasonWeight(weightsList, i, total);
+                incrementSeasonWeight(weightsList, i, total);
             }
 
             if (ExpectedSeason.GamesPlayed > 82)
+            {
                 ExpectedSeason.GamesPlayed = 82;
+            }
+                
 
-            ExpectedSeason.CalculatePoints();
+            ExpectedSeason.calculatePoints();
         }
 
         /// <summary>
@@ -92,7 +95,7 @@ namespace SeasonPredict
         /// <param name="weightList">Current list of weights each season has on the overall calculation</param>
         /// <param name="i">Current season index</param>
         /// <param name="total">Sum of all season weights</param>
-        private void IncrementSeasonWeight(List<double> weightList, int i, double total)
+        private void incrementSeasonWeight(List<double> weightList, int i, double total)
         {
             weightList[i] /= total;//Making this season's weight into percentage
             ExpectedSeason.Assists += (int)Math.Round((SeasonList[i].Assists * weightList[i]));
@@ -100,16 +103,21 @@ namespace SeasonPredict
             ExpectedSeason.GamesPlayed += (int)Math.Round((SeasonList[i].GamesPlayed * weightList[i]));
         }
 
-        private void AddWeight(List<double> weightsList, int i)
+        private void addWeight(List<double> weightsList, int i)
         {
             if (i == 0)
             {
                 weightsList.Add((double)(SeasonList.Count - i) * 0.4f);
             }
             else if (i == 1)
+            {
                 weightsList.Add((double)(SeasonList.Count - i) / (double)(SeasonList.Count) * 1.1f);
+
+            }
             else
+            {
                 weightsList.Add((double)(SeasonList.Count - i) / (double)(SeasonList.Count * (i + 1)));
+            }
         }
 
         public override string ToString()
@@ -123,10 +131,7 @@ namespace SeasonPredict
                        + "\nGames played: " + ExpectedSeason.GamesPlayed;
 
             }
-            else
-            {
-                return "Insufficient number of seasons.";
-            }
+            return "Insufficient number of seasons.";
         }
     }
     #endregion
@@ -134,33 +139,33 @@ namespace SeasonPredict
     #region Objects needed for deserialization of the JSON persons/stats coming from the NHL's API
     public class Stat2
     {
-        private int games;
-        private int goals;
-        private int assists;
+        private int _games;
+        private int _goals;
+        private int _assists;
 
-        public int Assists { get => assists; set => assists = value; }
-        public int Goals { get => goals; set => goals = value; }
-        public int Games { get => games; set => games = value; }
+        public int Assists { get => _assists; set => _assists = value; }
+        public int Goals { get => _goals; set => _goals = value; }
+        public int Games { get => _games; set => _games = value; }
     }
     public class Split
     {
-        private string season;
-        private Stat2 stat;
+        //private string season;
+        private Stat2 _stat;
 
-        public Stat2 Stat { get => stat; set => stat = value; }
-        public string Season { get => season; set => season = value; }
+        public Stat2 Stat { get => _stat; set => _stat = value; }
+        //public string Season { get => season; set => season = value; }
     }
     public class Stat
     {
-        private List<Split> splits;
+        private List<Split> _splits;
 
-        public List<Split> Splits { get => splits; set => splits = value; }
+        public List<Split> Splits { get => _splits; set => _splits = value; }
     }
     public class StatsList
     {
-        private List<Stat> stats;
+        private List<Stat> _stats;
 
-        public List<Stat> Stats { get => stats; set => stats = value; }
+        public List<Stat> Stats { get => _stats; set => _stats = value; }
         private int Assists => Stats[0].Splits[0].Stat.Assists;
         private int Goals => Stats[0].Splits[0].Stat.Goals;
         private int Games => Stats[0].Splits[0].Stat.Games;
@@ -169,19 +174,19 @@ namespace SeasonPredict
 
     public class Position
     {
-        private string code;
+        private string _code;
 
-        public string Code { get => code; set => code = value; }
+        public string Code { get => _code; set => _code = value; }
     }
     public class Person
     {
-        private string id;
-        private string fullName;
-        private bool active;
+        private string _id;
+        private string _fullName;
+        private bool _active;
 
-        public string Id { get => id; set => id = value; }
-        public string FullName { get => fullName; set => fullName = value; }
-        public bool Active { get => active; set => active = value; }
+        public string Id { get => _id; set => _id = value; }
+        public string FullName { get => _fullName; set => _fullName = value; }
+        public bool Active { get => _active; set => _active = value; }
 
         public Person()
         {
@@ -190,9 +195,9 @@ namespace SeasonPredict
     }
     public class PersonList
     {
-        private List<Person> people;
+        private List<Person> _people;
 
-        public List<Person> People { get => people; set => people = value; }
+        public List<Person> People { get => _people; set => _people = value; }
     }
 }
 #endregion

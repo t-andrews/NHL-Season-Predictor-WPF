@@ -33,24 +33,22 @@ namespace SeasonPredict
                 if (!PlayersMemory.Any(p => p.Id.Equals((playersListbox.SelectedItem as Roster2).Id)))
                 {
                     //When api is called, all GUI components are disabled to prevent user selection change problems
-                    SetComponentsAvailability(false);
+                    setComponentsAvailability(false);
 
                     expectedSeasonBox.Text = "Calculating...";
 
-                    var p = new Player(await ApiLoader.loadPlayer((playersListbox.SelectedItem as Roster2).Id),
-                        (playersListbox.SelectedItem as Roster2).Name, (playersListbox.SelectedItem as Roster2).Id);
+                    var p = new Player(await ApiLoader.loadPlayer((playersListbox.SelectedItem as Roster2).Id),(playersListbox.SelectedItem as Roster2).Name, (playersListbox.SelectedItem as Roster2).Id);
 
-                    PlayersMemory.Add(Player.Duplicate(p));
+                    PlayersMemory.Add(Player.duplicate(p));
 
                     expectedSeasonBox.Text = p.ToString();
 
                     //GUI components are enabled for the user
-                    SetComponentsAvailability(true);
+                    setComponentsAvailability(true);
                 }
                 else
                 {
-                    expectedSeasonBox.Text = PlayersMemory
-                        .First(p => p.Id.Equals((playersListbox.SelectedItem as Roster2).Id)).ToString();
+                    expectedSeasonBox.Text = PlayersMemory.First(p => p.Id.Equals((playersListbox.SelectedItem as Roster2).Id)).ToString();
                 }
             }
         }
@@ -59,7 +57,7 @@ namespace SeasonPredict
         ///     Makes GUI elements enabled or not according to availability parameter
         /// </summary>
         /// <param name="availability">Boolean value assigned to the IsEnabled property of graphical interface elements</param>
-        private void SetComponentsAvailability(bool availability)
+        private void setComponentsAvailability(bool availability)
         {
             teamsListbox.IsEnabled = availability;
             playersListbox.IsEnabled = availability;
@@ -74,8 +72,7 @@ namespace SeasonPredict
         private void TeamsList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             playersListbox.ItemsSource = (teamsListbox.SelectedItem as Team).PersonList;
-            sendRequestButton.IsEnabled =
-                false; //Since playersListbox isn't focused, the calculation button is disabled
+            sendRequestButton.IsEnabled = false; //Since playersListbox isn't focused, the calculation button is disabled
         }
 
         /// <summary>

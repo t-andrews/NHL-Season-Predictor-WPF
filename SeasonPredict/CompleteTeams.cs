@@ -68,9 +68,9 @@ namespace SeasonPredict
 
         public async void teamsInit()
         {
-            ObservableCollection <Team> temp = new ObservableCollection<Team>((await ApiLoader.loadTeams()).OrderBy(t => t.Name));//Calls function responsible for the api teams loading request
+            var temp = new ObservableCollection<Team>((await ApiLoader.loadTeams()).OrderBy(t => t.Name));//Calls function responsible for the api teams loading request
                                                                                                                                   //+ sorts collection by name
-            foreach (Team t in temp)
+            foreach (var t in temp)
                 Add(t);
         }
     }

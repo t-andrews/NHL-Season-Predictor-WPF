@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace SeasonPredict
 {
@@ -18,8 +18,7 @@ namespace SeasonPredict
         {
             var teamList = new ObservableCollection<Team>();
 
-            var url = "https://statsapi.web.nhl.com/api/v1/teams/";
-            TeamList allTeams;
+            const string url = "https://statsapi.web.nhl.com/api/v1/teams/";
 
             using (var client = new HttpClient())
             {
@@ -27,7 +26,7 @@ namespace SeasonPredict
 
                 if (response.IsSuccessStatusCode)
                 {
-                    allTeams = JsonConvert.DeserializeObject<TeamList>(
+                    var allTeams = JsonConvert.DeserializeObject<TeamList>(
                         await client.GetStringAsync(url + "?expand=team.roster"));
 
                     foreach (var team in allTeams.Teams)
@@ -47,8 +46,6 @@ namespace SeasonPredict
                     }
                 }
             }
-
-            ;
             return teamList;
         }
 
@@ -63,8 +60,6 @@ namespace SeasonPredict
             var stop = false;
             var year = "20172018";
             var url = "https://statsapi.web.nhl.com/api/v1/people/" + id + "/stats?stats=statsSingleSeason&season=";
-            string objectString;
-            StatsList seasonObject;
             var seasonList = new List<Season>();
 
             do
@@ -75,11 +70,11 @@ namespace SeasonPredict
 
                     if (response.IsSuccessStatusCode)
                     {
-                        objectString = await client.GetStringAsync(url + year);
+                        var objectString = await client.GetStringAsync(url + year);
                         if (objectString.Contains("\"season\"")) //Means there is an active season at that year
                         {
-                            seasonObject = JsonConvert.DeserializeObject<StatsList>(objectString);
-                            seasonList.Add(Season.Duplicate(seasonObject.Season));
+                            var seasonObject = JsonConvert.DeserializeObject<StatsList>(objectString);
+                            seasonList.Add(Season.duplicate(seasonObject.Season));
                         }
                         else
                         {
