@@ -18,7 +18,7 @@ namespace SeasonPredict
         {
             var teamList = new ObservableCollection<Team>();
 
-            const string url = "https://statsapi.web.nhl.com/api/v1/teams/";
+             var url = "https://statsapi.web.nhl.com/api/v1/teams/";
 
             using (var client = new HttpClient())
             {
@@ -26,15 +26,13 @@ namespace SeasonPredict
 
                 if (response.IsSuccessStatusCode)
                 {
-                    var allTeams = JsonConvert.DeserializeObject<TeamList>(
-                        await client.GetStringAsync(url + "?expand=team.roster"));
+                    var allTeams = JsonConvert.DeserializeObject<TeamList>(await client.GetStringAsync(url + "?expand=team.roster"));
 
                     foreach (var team in allTeams.Teams)
                     {
                         if (team.Active)
                         {
-                            team.PersonList =
-                                new ObservableCollection<Roster2>(team.PersonList.OrderBy(r => r.Person.FullName));
+                            team.PersonList = new ObservableCollection<Roster2>(team.PersonList.OrderBy(r => r.Person.FullName));
 
                             while (team.PersonList.Any(p => p.Code.Equals("G")))
                             {
