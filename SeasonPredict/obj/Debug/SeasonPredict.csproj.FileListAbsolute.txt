@@ -62,3 +62,11 @@ D:\VS Projects\NHL-Season-Predictor\SeasonPredict\obj\Debug\SeasonPredict.applic
 D:\VS Projects\NHL-Season-Predictor\SeasonPredict\obj\Debug\SeasonPredict.csproj.CopyComplete
 D:\VS Projects\NHL-Season-Predictor\SeasonPredict\obj\Debug\SeasonPredict.exe
 D:\VS Projects\NHL-Season-Predictor\SeasonPredict\obj\Debug\SeasonPredict.pdb
+C:\Users\Razer\Documents\Programming\Git\Github\NHL-Season-Predictor\SeasonPredict\obj\Debug\SeasonPredict.csprojAssemblyReference.cache
+C:\Users\Razer\Documents\Programming\Git\Github\NHL-Season-Predictor\SeasonPredict\obj\Debug\MainWindow.g.cs
+C:\Users\Razer\Documents\Programming\Git\Github\NHL-Season-Predictor\SeasonPredict\obj\Debug\App.g.cs
+C:\Users\Razer\Documents\Programming\Git\Github\NHL-Season-Predictor\SeasonPredict\obj\Debug\SeasonPredict_Content.g.cs
+C:\Users\Razer\Documents\Programming\Git\Github\NHL-Season-Predictor\SeasonPredict\obj\Debug\SeasonPredict_MarkupCompile.cache
+C:\Users\Razer\Documents\Programming\Git\Github\NHL-Season-Predictor\SeasonPredict\obj\Debug\SeasonPredict_MarkupCompile.lref
+C:\Users\Razer\Documents\Programming\Git\Github\NHL-Season-Predictor\SeasonPredict\obj\Debug\SeasonPredict.exe
+C:\Users\Razer\Documents\Programming\Git\Github\NHL-Season-Predictor\SeasonPredict\obj\Debug\SeasonPredict.pdb

@@ -139,11 +139,15 @@ namespace SeasonPredict
     #region Objects needed for deserialization of the JSON persons/stats coming from the NHL's API
     public class Stat2
     {
+        /// <summary>
+        /// The _games.
+        /// </summary>
         private int _games;
+
         private int _goals;
         private int _assists;
 
-        public int Assists { get => _assists; set => _assists = value; }
+        public int Assists { get; set; }
         public int Goals { get => _goals; set => _goals = value; }
         public int Games { get => _games; set => _games = value; }
     }
