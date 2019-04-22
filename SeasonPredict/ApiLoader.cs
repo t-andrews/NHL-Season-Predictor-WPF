@@ -1,51 +1,70 @@
-﻿using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
+﻿
 
 namespace SeasonPredict
 {
+    using RestSharp;
+    using Newtonsoft.Json;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Linq;
+    using System.Net.Http;
+    using System.Threading.Tasks;
+
+
     public class ApiLoader
     {
-        /// <summary>
-        ///     Fetching and deserializing all active teams
-        /// </summary>
-        /// <param name="id">Player ID in the NHL's database</param>
+        /// <summary>The URL</summary>
+        const string url = "https://statsapi.web.nhl.com/api/v1/";
+
+
+        /// <summary>The rest client</summary>
+        private readonly RestClient restClient;
+
+        /// <summary>Initializes a new instance of the <see cref="ApiLoader"/> class.</summary>
+        public ApiLoader()
+        {
+            this.restClient = new RestClient()
+                                  {
+                                      BaseHost = url
+                                  };
+        }
+
+        /// <summary>Fetching and deserializing all active teams</summary>
         /// <returns>The complete list of active teams (with their roster)</returns>
-        public static async Task<ObservableCollection<Team>> loadTeams()
+        public ObservableCollection<Team> loadTeams()
         {
             var teamList = new ObservableCollection<Team>();
 
-            const string url = "https://statsapi.web.nhl.com/api/v1/teams/";
+            var restRequest = new RestRequest()
+                                  {
+                                      Method = Method.GET,
+                                      Resource = "teams/?expand=team.roster"
+            };
 
-            using (var client = new HttpClient())
+            var responseDaFirst = this.restClient.Execute<TeamList>(restRequest);
+            var successFull = responseDaFirst.Data?.Teams;
+
+            if (successFull == null)
             {
-                var response = await client.GetAsync(url);
+                return null;
+            }
 
-                if (response.IsSuccessStatusCode)
+            foreach (var team in successFull)
+            {
+                if (team.Active)
                 {
-                    var allTeams = JsonConvert.DeserializeObject<TeamList>(
-                        await client.GetStringAsync(url + "?expand=team.roster"));
+                    team.PersonList =
+                        new ObservableCollection<Roster2>(team.PersonList.OrderBy(r => r.Person.FullName));
 
-                    foreach (var team in allTeams.Teams)
+                    while (team.PersonList.Any(p => p.Code.Equals("G")))
                     {
-                        if (team.Active)
-                        {
-                            team.PersonList =
-                                new ObservableCollection<Roster2>(team.PersonList.OrderBy(r => r.Person.FullName));
-
-                            while (team.PersonList.Any(p => p.Code.Equals("G")))
-                            {
-                                team.PersonList.Remove(team.PersonList.First(p => p.Code.Equals("G")));
-                            }
-
-                            teamList.Add(team);
-                        }
+                        team.PersonList.Remove(team.PersonList.First(p => p.Code.Equals("G")));
                     }
+
+                    teamList.Add(team);
                 }
             }
+
             return teamList;
         }
 
@@ -54,7 +73,7 @@ namespace SeasonPredict
         /// </summary>
         /// <param name="id">Player ID in the NHL's database</param>
         /// <returns>The player </returns>
-        public static async Task<Player> loadPlayer(string id)
+        public Player loadPlayer(string id)
         {
             var nullSeasonCount = 0;
             var stop = false;
@@ -62,10 +81,25 @@ namespace SeasonPredict
             var url = "https://statsapi.web.nhl.com/api/v1/people/" + id + "/stats?stats=statsSingleSeason&season=";
             var seasonList = new List<Season>();
 
+            var restRequest = new RestRequest()
+            {
+                Method = Method.GET,
+                Resource = "teams/?expand=team.roster"
+            };
+
             do
             {
-                using (var client = new HttpClient())
+                for (int i = 10; i > 0; i--)
                 {
+                    var myIntYear = 9;
+                    var currentYear = $"201{myIntYear}";
+
+                    if (returnValue == null)
+                    {
+                        break;
+                    }
+                }
+                
                     var response = await client.GetAsync(url + year);
 
                     if (response.IsSuccessStatusCode)
@@ -86,16 +120,11 @@ namespace SeasonPredict
                         nullSeasonCount++;
                     }
 
-                    if (nullSeasonCount > 4)
-                    {
-                        stop = true;
-                    }
-
                     //Subtracting one season year
                     year = int.Parse(year.Substring(0, 4)) - 1
                            + (int.Parse(year.Substring(4, 4)) - 1).ToString();
-                }
-            } while (!stop);
+                
+            } while (nullSeasonCount <= 4);
 
             return new Player(seasonList);
         }
