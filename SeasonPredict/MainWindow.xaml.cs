@@ -25,7 +25,7 @@ namespace SeasonPredict
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public async void SendRequest_Click(object sender, RoutedEventArgs e)
+        public void SendRequest_Click(object sender, RoutedEventArgs e)
         {
             if (!playersListbox.SelectedItem.Equals(null))
             {
@@ -37,7 +37,7 @@ namespace SeasonPredict
 
                     expectedSeasonBox.Text = "Calculating...";
 
-                    var p = new Player(await ApiLoader.loadPlayer((playersListbox.SelectedItem as Roster2).Id),(playersListbox.SelectedItem as Roster2).Name, (playersListbox.SelectedItem as Roster2).Id);
+                    var p = new Player(ApiLoader.loadPlayer((playersListbox.SelectedItem as Roster2).Id),(playersListbox.SelectedItem as Roster2).Name, (playersListbox.SelectedItem as Roster2).Id);
 
                     PlayersMemory.Add(Player.duplicate(p));
 
