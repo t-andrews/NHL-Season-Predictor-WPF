@@ -9,6 +9,5 @@
 //------------------------------------------------------------------------------
 
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("newtonsoft.json.dll")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("seasonpredict.pdb")]
 
 

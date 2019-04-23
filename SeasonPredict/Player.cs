@@ -5,14 +5,10 @@ using System.Linq;
 namespace SeasonPredict
 {
     #region Player class
-    //Player class representing a hockey player
     public class Player : Person
     {
-        private Season _expectedSeason;
-        private List<Season> _seasonList;
-
-        public List<Season> SeasonList { get => _seasonList; private set => _seasonList = value; }
-        public Season ExpectedSeason { get => _expectedSeason; private set => _expectedSeason = value; }
+        public List<Season> SeasonList { get; private set; }
+        public Season ExpectedSeason { get; private set; }
 
         public void add(Season s) => SeasonList.Add(s);
         public void remove(Season s) => SeasonList.Remove(s);
@@ -51,7 +47,7 @@ namespace SeasonPredict
         {
             var total = 0.0;
             var weightsList = new List<double>();
-            int i = 0, averageGames = (int)SeasonList.Average(p => p.GamesPlayed);
+            int i = 0, averageGames = (int)SeasonList.Average(s => s.GamesPlayed);
 
             for (i = 0; i < SeasonList.Count; i++)
             {
@@ -139,37 +135,22 @@ namespace SeasonPredict
     #region Objects needed for deserialization of the JSON persons/stats coming from the NHL's API
     public class Stat2
     {
-        /// <summary>
-        /// The _games.
-        /// </summary>
-        private int _games;
-
-        private int _goals;
-        private int _assists;
-
         public int Assists { get; set; }
-        public int Goals { get => _goals; set => _goals = value; }
-        public int Games { get => _games; set => _games = value; }
+        public int Goals { get; set; }
+        public int Games { get; set; }
     }
     public class Split
     {
-        //private string season;
-        private Stat2 _stat;
-
-        public Stat2 Stat { get => _stat; set => _stat = value; }
+        public Stat2 Stat { get; set; }
         //public string Season { get => season; set => season = value; }
     }
     public class Stat
     {
-        private List<Split> _splits;
-
-        public List<Split> Splits { get => _splits; set => _splits = value; }
+        public List<Split> Splits { get; set; }
     }
     public class StatsList
     {
-        private List<Stat> _stats;
-
-        public List<Stat> Stats { get => _stats; set => _stats = value; }
+        public List<Stat> Stats { get; set; }
         private int Assists => Stats[0].Splits[0].Stat.Assists;
         private int Goals => Stats[0].Splits[0].Stat.Goals;
         private int Games => Stats[0].Splits[0].Stat.Games;
@@ -178,30 +159,23 @@ namespace SeasonPredict
 
     public class Position
     {
-        private string _code;
-
-        public string Code { get => _code; set => _code = value; }
+        public string Code { get; set; }
     }
     public class Person
     {
-        private string _id;
-        private string _fullName;
-        private bool _active;
-
-        public string Id { get => _id; set => _id = value; }
-        public string FullName { get => _fullName; set => _fullName = value; }
-        public bool Active { get => _active; set => _active = value; }
+        public string Id { get; set; }
+        public string FullName { get; set; }
+        public bool Active { get; set; }
 
         public Person()
         {
             Active = true;
         }
     }
+
     public class PersonList
     {
-        private List<Person> _people;
-
-        public List<Person> People { get => _people; set => _people = value; }
+        public List<Person> People { get; set; }
     }
 }
 #endregion
