@@ -12,8 +12,10 @@ namespace SeasonPredict
         public List<Player>
             PlayersMemory; //Program instance players memory: stores players whose next season is already estimated during this instance of the program
 
+        public static ApiLoader loader;
         public MainWindow()
         {
+            loader = new ApiLoader();
             TeamsCollection = new TeamCollection();
             PlayersMemory = new List<Player>();
             InitializeComponent();
@@ -37,11 +39,11 @@ namespace SeasonPredict
 
                     expectedSeasonBox.Text = "Calculating...";
 
-                    var p = new Player(ApiLoader.loadPlayer((playersListbox.SelectedItem as Roster2).Id),(playersListbox.SelectedItem as Roster2).Name, (playersListbox.SelectedItem as Roster2).Id);
+                    var player = new Player(loader.loadPlayer((playersListbox.SelectedItem as Roster2).Id),(playersListbox.SelectedItem as Roster2).Name, (playersListbox.SelectedItem as Roster2).Id);
 
-                    PlayersMemory.Add(Player.duplicate(p));
+                    PlayersMemory.Add(Player.duplicate(player));
 
-                    expectedSeasonBox.Text = p.ToString();
+                    expectedSeasonBox.Text = player.ToString();
 
                     //GUI components are enabled for the user
                     setComponentsAvailability(true);
@@ -71,7 +73,7 @@ namespace SeasonPredict
         /// <param name="e"></param>
         private void TeamsList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            playersListbox.ItemsSource = (teamsListbox.SelectedItem as Team).PersonList;
+            playersListbox.ItemsSource = (teamsListbox.SelectedItem as Team).Roster.Roster;
             sendRequestButton.IsEnabled = false; //Since playersListbox isn't focused, the calculation button is disabled
         }
 

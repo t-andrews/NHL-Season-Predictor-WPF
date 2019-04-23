@@ -1,18 +1,13 @@
 ﻿namespace SeasonPredict
 {
-    //Season class representing the offensive production of a Player for a given year
+    #region Season Class representing the offensive production of a Player for a given year
 
     public class Season
     {
-        private int _assists;
-        private int _goals;
-        private int _points;
-        private int _gamesPlayed;
-
-        public int Assists { get => _assists; set => _assists = value; }
-        public int Goals { get => _goals; set => _goals = value; }
-        public int Points { get => _points; set => _points = value; }
-        public int GamesPlayed { get => _gamesPlayed; set => _gamesPlayed = value; }
+        public int Assists { get; set; }
+        public int Goals { get; set; }
+        public int Points { get; set; }
+        public int GamesPlayed { get; set; }
 
         public Season()
         {
@@ -41,3 +36,5 @@
         }
     }
 }
+
+#endregion
