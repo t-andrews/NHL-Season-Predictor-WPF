@@ -7,8 +7,8 @@ namespace SeasonPredict
     #region Player class
     public class Player : Person
     {
-        public List<Season> SeasonList { get; private set; }
-        public Season ExpectedSeason { get; private set; }
+        public List<Season> SeasonList { get;}
+        public Season ExpectedSeason { get;}
 
         public void add(Season s) => SeasonList.Add(s);
         public void remove(Season s) => SeasonList.Remove(s);
@@ -107,12 +107,12 @@ namespace SeasonPredict
             }
             else if (i == 1)
             {
-                weightsList.Add((double)(SeasonList.Count - i) / (double)(SeasonList.Count) * 1.1f);
+                weightsList.Add((double)(SeasonList.Count - i) / (SeasonList.Count) * 1.1f);
 
             }
             else
             {
-                weightsList.Add((double)(SeasonList.Count - i) / (double)(SeasonList.Count * (i + 1)));
+                weightsList.Add((double)(SeasonList.Count - i) / (SeasonList.Count * (i + 1)));
             }
         }
 
